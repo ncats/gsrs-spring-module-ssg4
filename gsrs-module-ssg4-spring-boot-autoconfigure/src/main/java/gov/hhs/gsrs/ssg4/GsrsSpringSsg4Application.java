@@ -1,7 +1,5 @@
 package gov.hhs.gsrs.ssg4;
 
-import gsrs.*;
-
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.*;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -18,17 +16,17 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 @SpringBootApplication
-@EnableGsrsApi(indexValueMakerDetector = EnableGsrsApi.IndexValueMakerDetector.CONF)
-@EnableGsrsJpaEntities
-@EnableGsrsLegacyAuthentication
-@EnableGsrsLegacyCache
-@EnableGsrsLegacyPayload
-@EnableGsrsLegacySequenceSearch
-@EnableGsrsLegacyStructureSearch
+//@EnableGsrsApi(indexValueMakerDetector = EnableGsrsApi.IndexValueMakerDetector.CONF)
+//@EnableGsrsJpaEntities
+//@EnableGsrsLegacyAuthentication
+//@EnableGsrsLegacyCache
+//@EnableGsrsLegacyPayload
+//@EnableGsrsLegacySequenceSearch
+//@EnableGsrsLegacyStructureSearch
 @EntityScan(basePackages ={"ix","gsrs", "gov.nih.ncats", "gov.hhs.gsrs"} )
 @EnableJpaRepositories(basePackages ={"ix","gsrs", "gov.nih.ncats", "gov.hhs.gsrs"} )
-@EnableGsrsScheduler
-@EnableGsrsBackup
+//@EnableGsrsScheduler
+//@EnableGsrsBackup
 @EnableAsync
 
 public class GsrsSpringSsg4Application {

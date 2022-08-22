@@ -1,6 +1,6 @@
 package gov.hhs.gsrs.ssg4;
 
-import gsrs.GSRSDataSourceConfig;
+// import gsrs.GSRSDataSourceConfig;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -30,7 +30,7 @@ import javax.sql.DataSource;
         basePackages = {"gov.hhs.gsrs.ssg4"}
 )
 @Slf4j
-public class Ssg4DataSourceConfig extends GSRSDataSourceConfig {
+public class Ssg4DataSourceConfig { // extends GSRSDataSourceConfig {
     //These 3 things and the basePackages above are the typical things that
     //may need to change if trying to make a new DataSourceConfig
     protected static final String[] BASE_PACKAGES = new String[] {"gov.hhs.gsrs.ssg4"};
@@ -61,7 +61,7 @@ public class Ssg4DataSourceConfig extends GSRSDataSourceConfig {
                 .dataSource(defaultDataSource)
                 .packages(BASE_PACKAGES)
                 .persistenceUnit(PERSIST_UNIT)
-                .properties(additionalJpaProperties(DATASOURCE_PROPERTY_PATH_PREFIX))
+              //  .properties(additionalJpaProperties(DATASOURCE_PROPERTY_PATH_PREFIX))
                 .build();
 
     }

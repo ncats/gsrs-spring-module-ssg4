@@ -1,15 +1,5 @@
 package gov.hhs.gsrs.ssg4.ssg4m.models;
 
-import gsrs.model.AbstractGsrsEntity;
-import gsrs.security.GsrsSecurityUtils;
-import ix.core.SingleParent;
-import ix.core.models.Indexable;
-import ix.core.models.ParentReference;
-import ix.core.models.Principal;
-import ix.core.models.UserProfile;
-import ix.ginas.models.serialization.GsrsDateDeserializer;
-import ix.ginas.models.serialization.GsrsDateSerializer;
-
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
@@ -23,7 +13,6 @@ import lombok.EqualsAndHashCode;
 import javax.persistence.*;
 import java.util.Date;
 
-@SingleParent
 @Data
 @Entity
 @Table(name="GSRS_SYNTH_PTWY_DTL_HIST")

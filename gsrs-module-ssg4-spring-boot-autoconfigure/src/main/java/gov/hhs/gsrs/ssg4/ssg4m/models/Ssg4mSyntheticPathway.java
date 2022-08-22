@@ -1,12 +1,13 @@
 package gov.hhs.gsrs.ssg4.ssg4m.models;
 
+/*
 import gsrs.BackupEntityProcessorListener;
 import gsrs.GsrsEntityProcessorListener;
 import gsrs.indexer.IndexerEntityListener;
 import ix.core.models.Backup;
 import ix.core.models.Indexable;
 import ix.core.models.IndexableRoot;
-
+*/
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -30,29 +31,20 @@ import java.util.List;
 import java.sql.Clob;
 import java.sql.Blob;
 
-@IndexableRoot
-@Backup
 @Data
 @Entity
 @Table(name="GSRS_SYNTH_PTWY")
 public class Ssg4mSyntheticPathway extends Ssg4mCommanData {
 
-    static final ThreadLocal<DateFormat> YEAR_DATE_FORMAT = new ThreadLocal<DateFormat>() {
-        @Override
-        protected DateFormat initialValue() {
-            return new SimpleDateFormat("yyyy");
-        }
-    };
-    //Today's Date
-    static final LocalDate todayDate = LocalDate.now();
-
     @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name = "SYNTH_PTWY_SKEY")
     public Long synthPathwaySkey;
 
     @Column(name = "SYNTH_PTWY_ID")
     public String synthPathwayId;
 
+    @Version
     @Column(name = "VRSN_NUM")
     public Long versionNumber;
 
@@ -71,8 +63,18 @@ public class Ssg4mSyntheticPathway extends Ssg4mCommanData {
     @Column(name = "VRSN_STUS_CD")
     public String versionStatusCd;
 
+    @Lob
+    @Basic(fetch = FetchType.EAGER)
     @Column(name = "SBMSN_DATA_TXT")
-    public Clob sbmsnDataText;
+    public String sbmsnDataText;
+
+    public String getSbmsnDataText() {
+        return this.sbmsnDataText;
+    }
+    public void setSbmsnDataText(String text) {
+        System.out.println("***** " + text);
+        this.sbmsnDataText = text;
+    }
 
     @Column(name = "PRNT_SBSTNC_UUID")
     public String printSbstncUuid;

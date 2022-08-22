@@ -1,9 +1,5 @@
 package gov.hhs.gsrs.ssg4.ssg4m.models;
 
-import ix.core.SingleParent;
-import ix.core.models.Indexable;
-import ix.core.models.ParentReference;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Data;
@@ -15,7 +11,6 @@ import java.util.Date;
 
 import javax.persistence.*;
 
-@SingleParent
 @Data
 @Entity
 @Table(name="GSRS_SYNTH_PTWY_HIST")

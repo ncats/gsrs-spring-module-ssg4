@@ -1,9 +1,5 @@
 package gov.hhs.gsrs.ssg4.ssg4m.models;
 
-import ix.core.SingleParent;
-import ix.core.models.Indexable;
-import ix.core.models.ParentReference;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import org.hibernate.annotations.LazyCollection;
@@ -18,18 +14,15 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-@SingleParent
 @Data
 @Entity
 @Table(name="GSRS_SYNTH_PTWY_DTL")
 public class Ssg4mSyntheticPathwayDetail extends Ssg4mCommanData {
 
     @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name = "SYNTH_PTWY_DTL_SKEY")
     public Long synthPathwayDetailSkey;
-
-    //@Column(name="SYNTH_PTWY_SKEY")
-    //public String synthPathwaySkey;
 
     @Column(name="SBSTNC_UUID")
     public String sbstncUuid;
@@ -43,8 +36,6 @@ public class Ssg4mSyntheticPathwayDetail extends Ssg4mCommanData {
     @Column(name="SBSTNC_ROLE_NM")
     public String sbstncRoleNm;
 
-    @Indexable(indexed=false)
-    @ParentReference
     @EqualsAndHashCode.Exclude
     @JsonIgnore
     @ManyToOne(cascade = CascadeType.PERSIST)
