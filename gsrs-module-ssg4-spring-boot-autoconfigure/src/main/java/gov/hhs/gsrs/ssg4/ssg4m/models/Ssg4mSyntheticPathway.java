@@ -8,12 +8,18 @@ import ix.core.models.Backup;
 import ix.core.models.Indexable;
 import ix.core.models.IndexableRoot;
 */
+
+import java.util.UUID;
+
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
+import org.hibernate.annotations.Type;
 
 import lombok.Data;
 import lombok.ToString;
@@ -41,8 +47,14 @@ public class Ssg4mSyntheticPathway extends Ssg4mCommanData {
     @Column(name = "SYNTH_PTWY_SKEY")
     public Long synthPathwaySkey;
 
+    //@GenericGenerator(name = "NullUUIDGenerator", strategy = "ix.ginas.models.generators.NullUUIDGenerator")
+    //@GeneratedValue(generator = "NullUUIDGenerator")
+    //maintain backwards compatibility with old GSRS store it as varchar(40) by default hibernate will store uuids as binary
+    @Type(type = "uuid-char" )
+    //@Column(length =40, updatable = false, unique = true)
+    //public UUID uuid;
     @Column(name = "SYNTH_PTWY_ID")
-    public String synthPathwayId;
+    public UUID synthPathwayId;
 
     @Version
     @Column(name = "VRSN_NUM")
@@ -68,11 +80,25 @@ public class Ssg4mSyntheticPathway extends Ssg4mCommanData {
     @Column(name = "SBMSN_DATA_TXT")
     public String sbmsnDataText;
 
+    @JsonIgnore
+    public JsonNode getSbmsnDataJson() {
+        JsonNode jsonNode = null;
+        try {
+            if (sbmsnDataText != null) {
+                ObjectMapper objectMapper = new ObjectMapper();
+                jsonNode = objectMapper.readTree(sbmsnDataText);
+            }
+        } catch(Exception ex) {
+            ex.printStackTrace();
+        }
+        return jsonNode;
+    }
+
     public String getSbmsnDataText() {
         return this.sbmsnDataText;
     }
+
     public void setSbmsnDataText(String text) {
-        System.out.println("***** " + text);
         this.sbmsnDataText = text;
     }
 
@@ -85,6 +111,7 @@ public class Ssg4mSyntheticPathway extends Ssg4mCommanData {
     @Column(name = "SBMSN_IMG")
     public Blob sbmsnImage;
 
+    /*
     @ToString.Exclude
     @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "owner")
@@ -98,7 +125,7 @@ public class Ssg4mSyntheticPathway extends Ssg4mCommanData {
             }
         }
     }
-
+    */
     public Long getId() {
         return synthPathwaySkey;
     }

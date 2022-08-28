@@ -24,6 +24,9 @@ public class Ssg4mSyntheticPathwayDetail extends Ssg4mCommanData {
     @Column(name = "SYNTH_PTWY_DTL_SKEY")
     public Long synthPathwayDetailSkey;
 
+    @Column(name = "SYNTH_PTWY_SKEY")
+    public Long synthPathwaySkey;
+
     @Column(name="SBSTNC_UUID")
     public String sbstncUuid;
 
@@ -36,6 +39,7 @@ public class Ssg4mSyntheticPathwayDetail extends Ssg4mCommanData {
     @Column(name="SBSTNC_ROLE_NM")
     public String sbstncRoleNm;
 
+    /*
     @EqualsAndHashCode.Exclude
     @JsonIgnore
     @ManyToOne(cascade = CascadeType.PERSIST)
@@ -45,4 +49,5 @@ public class Ssg4mSyntheticPathwayDetail extends Ssg4mCommanData {
     public void setOwner(Ssg4mSyntheticPathway synthPathway) {
         this.owner = synthPathway;
     }
+     */
 }

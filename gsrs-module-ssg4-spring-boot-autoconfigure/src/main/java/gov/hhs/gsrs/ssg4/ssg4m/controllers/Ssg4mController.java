@@ -86,6 +86,7 @@ public class Ssg4mController {
         }
         if (synthPathway.isPresent()) {
             return new ResponseEntity(synthPathway.get(), HttpStatus.OK);
+           // return new ResponseEntity(synthPathway.get().getSbmsnDataJson(), HttpStatus.OK);
         }
         return new ResponseEntity(Optional.empty(), HttpStatus.OK);
     }

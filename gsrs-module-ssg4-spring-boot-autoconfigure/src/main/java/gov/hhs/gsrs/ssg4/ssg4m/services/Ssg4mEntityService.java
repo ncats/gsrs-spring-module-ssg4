@@ -1,7 +1,7 @@
 package gov.hhs.gsrs.ssg4.ssg4m.services;
 
 import gov.hhs.gsrs.ssg4.ssg4m.models.*;
-import gov.hhs.gsrs.ssg4.ssg4m.repositories.Ssg4mRepository;
+import gov.hhs.gsrs.ssg4.ssg4m.repositories.*;
 /*
 import gsrs.controller.IdHelpers;
 import gsrs.events.AbstractEntityCreatedEvent;
@@ -9,6 +9,10 @@ import gsrs.events.AbstractEntityUpdatedEvent;
 import gsrs.repository.GroupRepository;
 import gsrs.service.AbstractGsrsEntityService;
 */
+
+import java.util.UUID;
+
+import ix.utils.Util;
 
 import ix.core.validator.ValidationMessage;
 import ix.core.validator.ValidationResponse;
@@ -25,6 +29,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 
 import java.io.IOException;
 import java.util.List;
@@ -39,6 +44,9 @@ public class Ssg4mEntityService {
 
     @Autowired
     private Ssg4mRepository repository;
+
+    @Autowired
+    private Ssg4mSyntheticPathwayIndexRepository repositoryIndex;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -65,7 +73,7 @@ public class Ssg4mEntityService {
     public Ssg4mSyntheticPathway create(Ssg4mSyntheticPathway ssg4mSyntheticPathway) {
         try {
             return repository.saveAndFlush(ssg4mSyntheticPathway);
-        }catch(Throwable t){
+        } catch (Throwable t) {
             t.printStackTrace();
             throw t;
         }
@@ -73,7 +81,180 @@ public class Ssg4mEntityService {
 
     @Transactional
     public Ssg4mSyntheticPathway update(Ssg4mSyntheticPathway ssg4mSyntheticPathway) {
-        return repository.saveAndFlush(ssg4mSyntheticPathway);
+        // Update/Save existing data into Synthetic Pathway table
+        Ssg4mSyntheticPathway ssg4SynthPathSaved = repository.saveAndFlush(ssg4mSyntheticPathway);
+
+        if (ssg4SynthPathSaved != null) {
+            // Delete existing records from Index table
+            repositoryIndex.findBySynthPathwaySkey(ssg4SynthPathSaved.synthPathwaySkey).forEach(ind -> {
+                repositoryIndex.deleteById(ind.synthPathwayDetailSkey);
+            });
+
+            // Create/Inert new records into the Index table
+            createPathwayIndex(ssg4SynthPathSaved);
+
+        }
+        return ssg4SynthPathSaved;
+    }
+
+    // public List<Ssg4mSyntheticPathwayDetail> createPathwayIndex(Ssg4mSyntheticPathway synthPathway) {
+    public void createPathwayIndex(Ssg4mSyntheticPathway synthPathway) {
+        JsonNode jsonNode = null;
+        Ssg4mSyntheticPathwayDetail ssg4mSyntheticPathwayDetail = new Ssg4mSyntheticPathwayDetail();
+
+        try {
+            // Get Json from clob
+            jsonNode = synthPathway.getSbmsnDataJson();
+
+            JsonNode jsonSubG4m = jsonNode.path("specifiedSubstanceG4m");
+
+            // Get Parent Substance
+            JsonNode jsonParentSub = jsonSubG4m.path("parentSubstance");
+            try {
+                // create Index Object to store into the database
+                Ssg4mSyntheticPathwayDetail pathwayIndex = new Ssg4mSyntheticPathwayDetail();
+
+                // Set foreign Key synthPathwaySkey
+                pathwayIndex.synthPathwaySkey = synthPathway.synthPathwaySkey;
+
+                // Get Parent Substance Details
+                pathwayIndex.sbstncUuid = jsonParentSub.findPath("refuuid").textValue();
+                pathwayIndex.sbstncPfrdNm = jsonParentSub.findPath("refPname").textValue();
+
+                pathwayIndex.sbstncReactnSectNm = "PARENT SUBSTANCE";
+
+                // Create/Save Parent Substance into database
+                Ssg4mSyntheticPathwayDetail pathwayIndexSaved = repositoryIndex.saveAndFlush(pathwayIndex);
+                /*if (pathwayIndexSaved == null) {
+
+                }*/
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+
+            // Get SSG4m Process
+            JsonNode jsonProcessList = jsonSubG4m.path("process");
+            if (!jsonProcessList.isMissingNode()) {
+                for (JsonNode jsonProcess : jsonProcessList) {
+
+                    // Get Site
+                    JsonNode jsonSiteList = jsonProcess.path("sites");
+                    if (!jsonSiteList.isMissingNode()) {
+                        for (JsonNode jsonSite : jsonSiteList) {
+
+                            // Get Stage
+                            JsonNode jsonStageList = jsonSite.path("stages");
+                            if (!jsonStageList.isMissingNode()) {
+                                for (JsonNode jsonStage : jsonStageList) {
+
+                                    // Get Starting Materials
+                                    JsonNode jsonStartingMaterialList = jsonStage.path("startingMaterials");
+                                    if (!jsonStartingMaterialList.isMissingNode()) {
+                                        for (JsonNode jsonStartingMaterial : jsonStartingMaterialList) {
+
+                                            try {
+                                                // create Index Object to store into the database
+                                                Ssg4mSyntheticPathwayDetail pathwayIndex = new Ssg4mSyntheticPathwayDetail();
+
+                                                // Set foreign Key synthPathwaySkey
+                                                pathwayIndex.synthPathwaySkey = synthPathway.synthPathwaySkey;
+
+                                                // Get Substance Name Details
+                                                JsonNode jsonMaterialSubName = jsonStartingMaterial.path("substanceName");
+
+                                                pathwayIndex.sbstncUuid = jsonMaterialSubName.findPath("refuuid").textValue();
+                                                pathwayIndex.sbstncPfrdNm = jsonMaterialSubName.findPath("refPname").textValue();
+
+                                                pathwayIndex.sbstncRoleNm = jsonStartingMaterial.findPath("substanceRole").textValue();
+                                                pathwayIndex.sbstncReactnSectNm = "STARTING MATERIAL";
+
+                                                // Create/Save Starting Material into database
+                                                Ssg4mSyntheticPathwayDetail pathwayIndexSaved = repositoryIndex.saveAndFlush(pathwayIndex);
+                                                /*if (pathwayIndexSaved == null) {
+
+                                                }*/
+
+                                            } catch (Exception ex) {
+                                                ex.printStackTrace();
+                                            }
+                                        } // for Starting Materials
+                                    }
+
+                                    // Get Process Materials
+                                    JsonNode jsonProcessingMaterialsList = jsonStage.path("processingMaterials");
+                                    if (!jsonProcessingMaterialsList.isMissingNode()) {
+                                        for (JsonNode jsonProcessingMaterial : jsonProcessingMaterialsList) {
+
+                                            try {
+                                                // create Index Object to store into the database
+                                                Ssg4mSyntheticPathwayDetail pathwayIndex = new Ssg4mSyntheticPathwayDetail();
+
+                                                // Set foreign Key synthPathwaySkey
+                                                pathwayIndex.synthPathwaySkey = synthPathway.synthPathwaySkey;
+
+                                                // Get Substance Name Details
+                                                JsonNode jsonMaterialSubName = jsonProcessingMaterial.path("substanceName");
+
+                                                pathwayIndex.sbstncUuid = jsonMaterialSubName.findPath("refuuid").textValue();
+                                                pathwayIndex.sbstncPfrdNm = jsonMaterialSubName.findPath("refPname").textValue();
+
+                                                pathwayIndex.sbstncRoleNm = jsonProcessingMaterial.findPath("substanceRole").textValue();
+                                                pathwayIndex.sbstncReactnSectNm = "PROCESSING MATERIAL";
+
+                                                // Create/Save Processing Material into database
+                                                Ssg4mSyntheticPathwayDetail pathwayIndexSaved = repositoryIndex.saveAndFlush(pathwayIndex);
+                                                /*if (pathwayIndexSaved == null) {
+
+                                                }*/
+
+                                            } catch (Exception ex) {
+                                                ex.printStackTrace();
+                                            }
+                                        } // for Processing Materials
+                                    }
+
+                                    // Get Resulting Materials
+                                    JsonNode jsonResultingMaterialsList = jsonStage.path("resultingMaterials");
+                                    if (!jsonResultingMaterialsList.isMissingNode()) {
+                                        for (JsonNode jsonResultingMaterial : jsonResultingMaterialsList) {
+
+                                            try {
+                                                // create Index Object to store into the database
+                                                Ssg4mSyntheticPathwayDetail pathwayIndex = new Ssg4mSyntheticPathwayDetail();
+
+                                                // Set foreign Key synthPathwaySkey
+                                                pathwayIndex.synthPathwaySkey = synthPathway.synthPathwaySkey;
+
+                                                // Get Substance Name Details
+                                                JsonNode jsonMaterialSubName = jsonResultingMaterial.path("substanceName");
+
+                                                pathwayIndex.sbstncUuid = jsonMaterialSubName.findPath("refuuid").textValue();
+                                                pathwayIndex.sbstncPfrdNm = jsonMaterialSubName.findPath("refPname").textValue();
+
+                                                pathwayIndex.sbstncRoleNm = jsonResultingMaterial.findPath("substanceRole").textValue();
+                                                pathwayIndex.sbstncReactnSectNm = "RESULTING MATERIAL";
+
+                                                // Create/Save Resulting Material into database
+                                                Ssg4mSyntheticPathwayDetail pathwayIndexSaved = repositoryIndex.saveAndFlush(pathwayIndex);
+                                                /*if (pathwayIndexSaved == null) {
+
+                                                }*/
+
+                                            } catch (Exception ex) {
+                                                ex.printStackTrace();
+                                            }
+                                        } // for Resulting Materials
+                                    }
+
+                                } // for Stage
+                            } // Process List not null
+                        } // for Site
+                    } // Site List not null
+                } // for Process
+            } // Process List not null
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 
     //@Override
@@ -84,7 +265,7 @@ public class Ssg4mEntityService {
     //@Override
     //protected AbstractEntityUpdatedEvent<Ssg4mSyntheticPathway> newUpdateEvent(Ssg4mSyntheticPathway updatedEntity) {
     //    return null;
-   // }
+    // }
 
     //@Override
     //protected AbstractEntityCreatedEvent<Ssg4mSyntheticPathway> newCreationEvent(Ssg4mSyntheticPathway createdEntity) {
@@ -121,7 +302,10 @@ public class Ssg4mEntityService {
     }
 
     public Optional<Ssg4mSyntheticPathway> flexLookup(String someKindOfId) {
-        if (someKindOfId == null){
+        if (Util.isUUID(someKindOfId)) {
+            return repository.findBySynthPathwayId(someKindOfId);
+        }
+        if (someKindOfId == null) {
             return Optional.empty();
         }
         return repository.findById(Long.parseLong(someKindOfId));
@@ -130,7 +314,7 @@ public class Ssg4mEntityService {
     protected Optional<Long> flexLookupIdOnly(String someKindOfId) {
         //easiest way to avoid deduping data is to just do a full flex lookup and then return id
         Optional<Ssg4mSyntheticPathway> found = flexLookup(someKindOfId);
-        if(found.isPresent()){
+        if (found.isPresent()) {
             return Optional.of(found.get().synthPathwaySkey);
         }
         return Optional.empty();

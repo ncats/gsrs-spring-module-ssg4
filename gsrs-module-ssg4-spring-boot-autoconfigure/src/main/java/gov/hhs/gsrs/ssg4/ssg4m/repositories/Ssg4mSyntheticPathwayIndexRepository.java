@@ -13,10 +13,10 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public interface Ssg4mRepository extends JpaRepository<Ssg4mSyntheticPathway, Long> { //GsrsVersionedRepository<Ssg4mSyntheticPathway, Long> {
+public interface Ssg4mSyntheticPathwayIndexRepository extends JpaRepository<Ssg4mSyntheticPathwayDetail, Long> { //GsrsVersionedRepository<Ssg4mSyntheticPathway, Long> {
 
-    Optional<Ssg4mSyntheticPathway> findById(Long synthPathwaySkey);
+    Optional<Ssg4mSyntheticPathwayDetail> findById(Long Ssg4mSyntheticPathwayDetail);
 
-    Optional<Ssg4mSyntheticPathway> findBySynthPathwayId(String synthPathwayId);
+    List<Ssg4mSyntheticPathwayDetail> findBySynthPathwaySkey(Long parentSkey);
 
 }
