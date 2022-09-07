@@ -1,7 +1,6 @@
 package gov.hhs.gsrs.ssg4.ssg4m.controllers;
 
 import gov.hhs.gsrs.ssg4.Ssg4DataSourceConfig;
-import gov.hhs.gsrs.ssg4.SubstanceModuleService;
 import gov.hhs.gsrs.ssg4.ssg4m.models.*;
 import gov.hhs.gsrs.ssg4.ssg4m.services.Ssg4mEntityService;
 import gov.hhs.gsrs.ssg4.ssg4m.searcher.LegacySsg4mSearcher;

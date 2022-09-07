@@ -35,8 +35,6 @@
         <gsrs.version>3.0.2-SNAPSHOT</gsrs.version>
         <gsrs.ssg4.version>0.1.0-SNAPSHOT</gsrs.ssg4.version>
         <log4j2.version>2.17.1</log4j2.version>
-        <!-- TO BE REMOVE -->
-        <gsrs.substance.version>3.0.2-SNAPSHOT</gsrs.substance.version>
     </properties>
 
     <repositories>

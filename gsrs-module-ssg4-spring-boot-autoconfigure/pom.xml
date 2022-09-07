@@ -48,6 +48,16 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
+        <dependency>
+            <groupId>javax.xml.bind</groupId>
+            <artifactId>jaxb-api</artifactId>
+            <version>2.3.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <optional>true</optional>
+        </dependency>
         <!-- NCATS Dependencies -->
         <dependency>
             <groupId>gov.nih.ncats</groupId>
@@ -76,36 +86,22 @@
         </dependency>
         <dependency>
             <groupId>gov.nih.ncats</groupId>
-            <artifactId>gsrs-scheduled-tasks</artifactId>
+            <artifactId>gsrs-spring-legacy-cache</artifactId>
             <version>${gsrs.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <optional>true</optional>
-        </dependency>
-            <dependency>
-                <groupId>gov.nih.ncats</groupId>
-                <artifactId>gsrs-spring-boot-starter</artifactId>
-                <version>${gsrs.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>gov.nih.ncats</groupId>
-                <artifactId>gsrs-core-entities</artifactId>
-                <version>${gsrs.version}</version>
-                <scope>compile</scope>
-            </dependency>
-        <dependency>
-            <groupId>javax.xml.bind</groupId>
-            <artifactId>jaxb-api</artifactId>
-            <version>2.3.0</version>
+            <groupId>gov.nih.ncats</groupId>
+            <artifactId>gsrs-scheduled-tasks</artifactId>
+            <version>${gsrs.version}</version>
         </dependency>
         <!-- SUBSTANCE Dependencies TO BE REMOVED -->
+        <!--
         <dependency>
             <groupId>gov.nih.ncats</groupId>
             <artifactId>gsrs-module-substances-spring-boot-starter</artifactId>
             <version>${gsrs.substance.version}</version>
         </dependency>
+        -->
         <!-- DATABASE DEPENDENCIES  TO BE MOVED TO GSRS-CI? -->
         <dependency>
             <groupId>com.oracle.database.jdbc</groupId>
