@@ -49,6 +49,22 @@
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-hateoas</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.github.zeldigas</groupId>
+            <artifactId>spring-hocon-property-source</artifactId>
+            <version>0.4.0</version>
+        </dependency>
+        <!--
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-entitymanager</artifactId>
+            <version>5.2.3.Final</version>
+        </dependency>
+        -->
+        <dependency>
             <groupId>javax.xml.bind</groupId>
             <artifactId>jaxb-api</artifactId>
             <version>2.3.0</version>
@@ -64,16 +80,20 @@
             <artifactId>ncats-common</artifactId>
             <version>0.3.5</version>
         </dependency>
+        <!-- STARTER Dependencies -->
+        <!--
         <dependency>
             <groupId>gov.nih.ncats</groupId>
             <artifactId>gsrs-spring-boot-starter</artifactId>
             <version>${gsrs.version}</version>
         </dependency>
+
         <dependency>
             <groupId>gov.nih.ncats</groupId>
             <artifactId>gsrs-spring-legacy-indexer</artifactId>
             <version>${gsrs.version}</version>
         </dependency>
+
         <dependency>
             <groupId>gov.nih.ncats</groupId>
             <artifactId>gsrs-core-entities</artifactId>
@@ -89,11 +109,14 @@
             <artifactId>gsrs-spring-legacy-cache</artifactId>
             <version>${gsrs.version}</version>
         </dependency>
+        -->
+        <!--
         <dependency>
             <groupId>gov.nih.ncats</groupId>
             <artifactId>gsrs-scheduled-tasks</artifactId>
             <version>${gsrs.version}</version>
         </dependency>
+        -->
         <!-- SUBSTANCE Dependencies TO BE REMOVED -->
         <!--
         <dependency>

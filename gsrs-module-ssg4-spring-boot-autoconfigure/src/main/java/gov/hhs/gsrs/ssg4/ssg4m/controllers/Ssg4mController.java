@@ -1,12 +1,13 @@
 package gov.hhs.gsrs.ssg4.ssg4m.controllers;
 
+//import gov.hhs.gsrs.ssg4.DefaultDataSourceConfig;
 import gov.hhs.gsrs.ssg4.Ssg4DataSourceConfig;
 import gov.hhs.gsrs.ssg4.ssg4m.models.*;
 import gov.hhs.gsrs.ssg4.ssg4m.services.Ssg4mEntityService;
 import gov.hhs.gsrs.ssg4.ssg4m.searcher.LegacySsg4mSearcher;
 
-import ix.core.validator.ValidationResponse;
-import gov.nih.ncats.common.util.Unchecked;
+//import ix.core.validator.ValidationResponse;
+//import gov.nih.ncats.common.util.Unchecked;
 
 /*
 import gsrs.DefaultDataSourceConfig;
@@ -29,9 +30,6 @@ import org.springframework.core.task.TaskExecutor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.hateoas.server.ExposesResourceFor;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -40,6 +38,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+//import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.hateoas.server.ExposesResourceFor;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -63,9 +64,10 @@ public class Ssg4mController {
 
     private final String CONTEXT = Ssg4mEntityService.CONTEXT;
 
-    // Autowires for Starter and Substance modules
-    @PersistenceContext(unitName = Ssg4DataSourceConfig.NAME_ENTITY_MANAGER)
-    private EntityManager entityManager;
+    //@PersistenceContext
+   // @PersistenceContext(unitName = Ssg4DataSourceConfig.NAME_ENTITY_MANAGER)
+    //@PersistenceContext(unitName = DefaultDataSourceConfig.NAME_ENTITY_MANAGER)
+    //private EntityManager entityManager;
 
     @Autowired
     private PlatformTransactionManager transactionManager;
