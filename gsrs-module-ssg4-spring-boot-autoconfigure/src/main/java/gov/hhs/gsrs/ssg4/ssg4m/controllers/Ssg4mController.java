@@ -79,6 +79,16 @@ public class Ssg4mController {
     @Autowired
     private Ssg4mEntityService ssg4mEntityService;
 
+    @GetMapping("")
+    public ResponseEntity<String> checkEndpoint() throws Exception {
+        return new ResponseEntity("OK", HttpStatus.OK);
+    }
+
+    @GetMapping("actuator/health")
+    public ResponseEntity<String> checkHealth() throws Exception {
+        return new ResponseEntity("The server is up", HttpStatus.OK);
+    }
+
     @GetMapping("{id}")
     public ResponseEntity<String> getById(@PathVariable("id") Long id) throws Exception {
         Optional<Ssg4mSyntheticPathway> synthPathway = ssg4mEntityService.get(id);
