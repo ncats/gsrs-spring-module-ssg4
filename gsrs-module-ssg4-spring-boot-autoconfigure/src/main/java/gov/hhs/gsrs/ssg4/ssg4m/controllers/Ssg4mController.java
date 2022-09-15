@@ -45,6 +45,8 @@ import org.springframework.hateoas.server.ExposesResourceFor;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import net.minidev.json.JSONObject;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.servlet.http.HttpServletRequest;
@@ -80,13 +82,17 @@ public class Ssg4mController {
     private Ssg4mEntityService ssg4mEntityService;
 
     @GetMapping("")
-    public ResponseEntity<String> checkEndpoint() throws Exception {
-        return new ResponseEntity("OK", HttpStatus.OK);
+    public ResponseEntity<Object> checkEndpoint() throws Exception {
+        JSONObject status = new JSONObject();
+        status.put("status", "OK");
+        return new ResponseEntity(status, HttpStatus.OK);
     }
 
     @GetMapping("actuator/health")
-    public ResponseEntity<String> checkHealth() throws Exception {
-        return new ResponseEntity("The server is up", HttpStatus.OK);
+    public ResponseEntity<Object> checkHealth() throws Exception {
+        JSONObject status = new JSONObject();
+        status.put("status", "UP");
+        return new ResponseEntity(status, HttpStatus.OK);
     }
 
     @GetMapping("{id}")
