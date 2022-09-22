@@ -296,13 +296,15 @@ public class Ssg4mEntityService {
         return repository.count();
     }
 
-    public Optional<Ssg4mSyntheticPathway> get(Long id) {
-        return repository.findById(id);
+    public Optional<Ssg4mSyntheticPathway> get(String id) {
+        // return repository.findById(id);
+        return flexLookupIdOnly(id);
     }
 
     public Optional<Ssg4mSyntheticPathway> flexLookup(String someKindOfId) {
         if (Util.isUUID(someKindOfId)) {
-            return repository.findBySynthPathwayId(someKindOfId);
+            UUID pathwayId = UUID.fromString(someKindOfId);
+            return repository.findBySynthPathwayId(pathwayId);
         }
         if (someKindOfId == null) {
             return Optional.empty();
@@ -310,11 +312,12 @@ public class Ssg4mEntityService {
         return repository.findById(Long.parseLong(someKindOfId));
     }
 
-    protected Optional<Long> flexLookupIdOnly(String someKindOfId) {
+    protected Optional<Ssg4mSyntheticPathway> flexLookupIdOnly(String someKindOfId) {
         //easiest way to avoid deduping data is to just do a full flex lookup and then return id
-        Optional<Ssg4mSyntheticPathway> found = flexLookup(someKindOfId);
-        if (found.isPresent()) {
-            return Optional.of(found.get().synthPathwaySkey);
+        Optional<Ssg4mSyntheticPathway> synthPathway = flexLookup(someKindOfId);
+        if (synthPathway.isPresent()) {
+            return synthPathway;
+           // return Optional.of(found.get().synthPathwaySkey);
         }
         return Optional.empty();
     }

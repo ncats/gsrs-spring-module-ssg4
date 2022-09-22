@@ -36,21 +36,22 @@ import java.util.Date;
 import java.util.List;
 import java.sql.Clob;
 import java.sql.Blob;
+import java.nio.charset.StandardCharsets;
 
 @Data
 @Entity
-@Table(name="GSRS_SYNTH_PTWY")
+@Table(name = "GSRS_SYNTH_PTWY")
 public class Ssg4mSyntheticPathway extends Ssg4mCommanData {
 
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "SYNTH_PTWY_SKEY")
     public Long synthPathwaySkey;
 
     //@GenericGenerator(name = "NullUUIDGenerator", strategy = "ix.ginas.models.generators.NullUUIDGenerator")
     //@GeneratedValue(generator = "NullUUIDGenerator")
     //maintain backwards compatibility with old GSRS store it as varchar(40) by default hibernate will store uuids as binary
-    @Type(type = "uuid-char" )
+    @Type(type = "uuid-char")
     //@Column(length =40, updatable = false, unique = true)
     //public UUID uuid;
     @Column(name = "SYNTH_PTWY_ID")
@@ -88,7 +89,7 @@ public class Ssg4mSyntheticPathway extends Ssg4mCommanData {
                 ObjectMapper objectMapper = new ObjectMapper();
                 jsonNode = objectMapper.readTree(sbmsnDataText);
             }
-        } catch(Exception ex) {
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
         return jsonNode;
@@ -108,8 +109,21 @@ public class Ssg4mSyntheticPathway extends Ssg4mCommanData {
     @Column(name = "PRNT_SBSTNC_PRFRD_NM")
     public String printSbstncPrfrdNm;
 
+    @Lob
+    @Basic(fetch = FetchType.LAZY)
     @Column(name = "SBMSN_IMG")
-    public Blob sbmsnImage;
+    public byte[] sbmsnImage;
+
+    public String getSbmsnImage() {
+        if (this.sbmsnImage == null) {
+            return null;
+        }
+        return new String(this.sbmsnImage, StandardCharsets.UTF_8);
+    }
+
+    public void setSbmsnImage(String text) {
+        this.sbmsnImage = text.getBytes(StandardCharsets.UTF_8);
+    }
 
     /*
     @ToString.Exclude
