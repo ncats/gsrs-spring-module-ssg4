@@ -96,14 +96,13 @@ public class Ssg4mController {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<String> getById(@PathVariable("id") Long id) throws Exception {
+    public ResponseEntity<String> getById(@PathVariable("id") String id) throws Exception {
         Optional<Ssg4mSyntheticPathway> synthPathway = ssg4mEntityService.get(id);
         if (id == null) {
             throw new IllegalArgumentException("There is no Synthetic Pathway Id provided");
         }
         if (synthPathway.isPresent()) {
             return new ResponseEntity(synthPathway.get(), HttpStatus.OK);
-           // return new ResponseEntity(synthPathway.get().getSbmsnDataJson(), HttpStatus.OK);
         }
         return new ResponseEntity(Optional.empty(), HttpStatus.OK);
     }
