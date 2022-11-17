@@ -16,10 +16,15 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.annotations.Type;
+
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import lombok.Data;
 import lombok.ToString;
@@ -41,10 +46,12 @@ import java.nio.charset.StandardCharsets;
 @Data
 @Entity
 @Table(name = "GSRS_SYNTH_PTWY")
-public class Ssg4mSyntheticPathway extends Ssg4mCommanData {
+public class Ssg4mSyntheticPathway { //extends Ssg4mCommanData {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @SequenceGenerator(name="synthSeq", sequenceName="GSRS_SYNTH_PTWY_SQ", allocationSize=1)
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "synthSeq")
+   // @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "SYNTH_PTWY_SKEY")
     public Long synthPathwaySkey;
 
@@ -109,6 +116,23 @@ public class Ssg4mSyntheticPathway extends Ssg4mCommanData {
     @Column(name = "PRNT_SBSTNC_PRFRD_NM")
     public String printSbstncPrfrdNm;
 
+    /* USING CLOB */
+    /*
+    @Lob
+    @Basic(fetch = FetchType.EAGER)
+    @Column(name = "SBMSN_IMG")
+    public String sbmsnImage;
+
+    public String getSbmsnImage() {
+        return this.sbmsnImage;
+    }
+
+    public void setSbmsnImage(String image) {
+        this.sbmsnImage = image;
+    }
+    */
+
+    /* USING BLOB */
     @Lob
     @Basic(fetch = FetchType.LAZY)
     @Column(name = "SBMSN_IMG")
@@ -125,21 +149,20 @@ public class Ssg4mSyntheticPathway extends Ssg4mCommanData {
         this.sbmsnImage = text.getBytes(StandardCharsets.UTF_8);
     }
 
-    /*
-    @ToString.Exclude
-    @LazyCollection(LazyCollectionOption.FALSE)
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "owner")
-    public List<Ssg4mSyntheticPathwayDetail> ssg4mSyntheticPathwayDetailsList = new ArrayList<>();
+    @Column(name = "AUD_INS_USR_ID")
+    private String createdBy;
 
-    public void setSsg4mSyntheticPathwayDetailsList(List<Ssg4mSyntheticPathwayDetail> ssg4mSyntheticPathwayDetailsList) {
-        this.ssg4mSyntheticPathwayDetailsList = ssg4mSyntheticPathwayDetailsList;
-        if (ssg4mSyntheticPathwayDetailsList != null) {
-            for (Ssg4mSyntheticPathwayDetail ssg4mSynthDetail : ssg4mSyntheticPathwayDetailsList) {
-                ssg4mSynthDetail.setOwner(this);
-            }
-        }
-    }
-    */
+    @Column(name = "AUD_UPD_USR_ID")
+    private String modifiedBy;
+
+    @CreatedDate
+    @Column(name = "AUD_INS_DTTM")
+    private Date creationDate;
+
+    @LastModifiedDate
+    @Column(name = "AUD_UPD_DTTM")
+    private Date lastModifiedDate;
+
     public Long getId() {
         return synthPathwaySkey;
     }
