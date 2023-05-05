@@ -107,6 +107,15 @@ public class Ssg4mController {
         return new ResponseEntity(Optional.empty(), HttpStatus.OK);
     }
 
+    @GetMapping("indexbysubuuid/{subUuid}")
+    public ResponseEntity<String> findBySyntheticDetailBySubUuid(@PathVariable("subUuid") String substanceUuid) throws Exception {
+        List<Ssg4mSyntheticPathwayDetail> list = ssg4mEntityService.findBySyntheticDetailBySubUuid(substanceUuid);
+        if (substanceUuid == null) {
+            throw new IllegalArgumentException("There is no Substance UUID provided in function getSyntheticDetailsBySubUuid");
+        }
+        return new ResponseEntity(list, HttpStatus.OK);
+    }
+
     @PostMapping()
     public ResponseEntity<Object> createEntity(@RequestBody Ssg4mSyntheticPathway entityJson) throws Exception {
         Ssg4mSyntheticPathway result = ssg4mEntityService.create(entityJson);

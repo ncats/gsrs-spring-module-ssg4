@@ -117,7 +117,6 @@ public class Ssg4mSyntheticPathway { //extends Ssg4mCommanData {
     public String printSbstncPrfrdNm;
 
     /* USING CLOB */
-    /*
     @Lob
     @Basic(fetch = FetchType.EAGER)
     @Column(name = "SBMSN_IMG")
@@ -130,9 +129,9 @@ public class Ssg4mSyntheticPathway { //extends Ssg4mCommanData {
     public void setSbmsnImage(String image) {
         this.sbmsnImage = image;
     }
-    */
 
     /* USING BLOB */
+    /*
     @Lob
     @Basic(fetch = FetchType.LAZY)
     @Column(name = "SBMSN_IMG")
@@ -148,6 +147,7 @@ public class Ssg4mSyntheticPathway { //extends Ssg4mCommanData {
     public void setSbmsnImage(String text) {
         this.sbmsnImage = text.getBytes(StandardCharsets.UTF_8);
     }
+    */
 
     @Column(name = "AUD_INS_USR_ID")
     private String createdBy;

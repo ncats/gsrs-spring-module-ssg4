@@ -15,11 +15,12 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
-//@Repository
-public interface Ssg4mRepository extends JpaRepository<Ssg4mSyntheticPathway, Long> { //GsrsVersionedRepository<Ssg4mSyntheticPathway, Long> {
+public interface Ssg4mRepository extends JpaRepository<Ssg4mSyntheticPathway, Long> {
 
     Optional<Ssg4mSyntheticPathway> findById(Long synthPathwaySkey);
 
     Optional<Ssg4mSyntheticPathway> findBySynthPathwayId(UUID synthPathwayId);
 
+    @Query("SELECT a from Ssg4mSyntheticPathwayDetail a WHERE a.sbstncUuid = ?1 order by a.synthPathwaySkey")
+    List<Ssg4mSyntheticPathwayDetail> findBySyntheticDetailBySubUuid(String sbstncUuid);
 }
