@@ -71,6 +71,9 @@ public class Ssg4mEntityService {
 
     public Ssg4mSyntheticPathway create(Ssg4mSyntheticPathway ssg4mSyntheticPathway) {
         try {
+            if (ssg4mSyntheticPathway.synthPathwayId == null) {
+                ssg4mSyntheticPathway.synthPathwayId = UUID.randomUUID();
+            }
             return repository.saveAndFlush(ssg4mSyntheticPathway);
         } catch (Throwable t) {
             t.printStackTrace();
@@ -94,6 +97,11 @@ public class Ssg4mEntityService {
 
         }
         return ssg4SynthPathSaved;
+    }
+
+    public List<Ssg4mSyntheticPathwayDetail> findBySyntheticDetailBySubUuid(String subUuid) {
+        List<Ssg4mSyntheticPathwayDetail> list = repository.findBySyntheticDetailBySubUuid(subUuid);
+        return list;
     }
 
     // public List<Ssg4mSyntheticPathwayDetail> createPathwayIndex(Ssg4mSyntheticPathway synthPathway) {
