@@ -31,10 +31,10 @@ public class Ssg4mSyntheticPathwayDetailHistory extends Ssg4mCommanData {
     @Column(name="SBSTNC_UUID")
     public String sbstncUuid;
 
-    @Column(name="SBSTNC_PFRD_NM")
+    @Column(name="SBSTNC_PFRD_NM", length=500)
     public String sbstncPfrdNm;
 
-    @Column(name="SBSTNC_REACTN_SECT_NM")
+    @Column(name="SBSTNC_REACTN_SECT_NM", length=500)
     public String sbstncReactnSectNm;
 
     @Column(name="SBSTNC_ROLE_NM")

@@ -37,10 +37,10 @@ public class Ssg4mSyntheticPathwayDetail { //extends Ssg4mCommanData {
     @Column(name="SBSTNC_UUID")
     public String sbstncUuid;
 
-    @Column(name="SBSTNC_PFRD_NM")
+    @Column(name="SBSTNC_PFRD_NM", length=500)
     public String sbstncPfrdNm;
 
-    @Column(name="SBSTNC_REACTN_SECT_NM")
+    @Column(name="SBSTNC_REACTN_SECT_NM", length=500)
     public String sbstncReactnSectNm;
 
     @Column(name="SBSTNC_ROLE_NM")
@@ -60,15 +60,4 @@ public class Ssg4mSyntheticPathwayDetail { //extends Ssg4mCommanData {
     @Column(name = "AUD_UPD_DTTM")
     private Date lastModifiedDate;
 
-    /*
-    @EqualsAndHashCode.Exclude
-    @JsonIgnore
-    @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name="SYNTH_PTWY_SKEY",referencedColumnName="SYNTH_PTWY_SKEY")
-    public Ssg4mSyntheticPathway owner;
-
-    public void setOwner(Ssg4mSyntheticPathway synthPathway) {
-        this.owner = synthPathway;
-    }
-     */
 }
