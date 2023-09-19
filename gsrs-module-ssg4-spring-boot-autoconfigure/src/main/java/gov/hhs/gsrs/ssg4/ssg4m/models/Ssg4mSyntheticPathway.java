@@ -1,14 +1,5 @@
 package gov.hhs.gsrs.ssg4.ssg4m.models;
 
-/*
-import gsrs.BackupEntityProcessorListener;
-import gsrs.GsrsEntityProcessorListener;
-import gsrs.indexer.IndexerEntityListener;
-import ix.core.models.Backup;
-import ix.core.models.Indexable;
-import ix.core.models.IndexableRoot;
-*/
-
 import java.util.UUID;
 
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -46,21 +37,16 @@ import java.nio.charset.StandardCharsets;
 @Data
 @Entity
 @Table(name = "GSRS_SYNTH_PTWY")
-public class Ssg4mSyntheticPathway { //extends Ssg4mCommanData {
+public class Ssg4mSyntheticPathway {
 
     @Id
     @SequenceGenerator(name="synthSeq", sequenceName="GSRS_SYNTH_PTWY_SQ", allocationSize=1)
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "synthSeq")
-   // @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "SYNTH_PTWY_SKEY")
     public Long synthPathwaySkey;
 
-    //@GenericGenerator(name = "NullUUIDGenerator", strategy = "ix.ginas.models.generators.NullUUIDGenerator")
-    //@GeneratedValue(generator = "NullUUIDGenerator")
     //maintain backwards compatibility with old GSRS store it as varchar(40) by default hibernate will store uuids as binary
     @Type(type = "uuid-char")
-    //@Column(length =40, updatable = false, unique = true)
-    //public UUID uuid;
     @Column(name = "SYNTH_PTWY_ID")
     public UUID synthPathwayId;
 
