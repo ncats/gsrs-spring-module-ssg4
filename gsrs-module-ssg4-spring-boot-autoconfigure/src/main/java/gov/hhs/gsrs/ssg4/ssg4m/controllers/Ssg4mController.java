@@ -41,23 +41,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 //import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.hateoas.server.ExposesResourceFor;
-
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import net.minidev.json.JSONObject;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.servlet.http.HttpServletRequest;
-
-import java.io.IOException;
-import java.io.OutputStream;
-import java.security.Principal;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.servlet.http.HttpServletRequest;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Stream;
 
 @ExposesResourceFor(Ssg4mSyntheticPathway.class)
 @RestController

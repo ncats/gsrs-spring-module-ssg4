@@ -11,7 +11,7 @@ import java.sql.Clob;
 import java.sql.Blob;
 import java.util.Date;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 @Data
 @Entity
