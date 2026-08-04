@@ -20,7 +20,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import lombok.Data;
 import lombok.ToString;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
@@ -46,7 +46,9 @@ public class Ssg4mSyntheticPathway {
     public Long synthPathwaySkey;
 
     //maintain backwards compatibility with old GSRS store it as varchar(40) by default hibernate will store uuids as binary
-    @Type(type = "uuid-char")
+    // SB 3x __aw__ @Type annotation did not work
+    // Archana should check if this is OK
+    // @Type(type = "uuid-char")
     @Column(name = "SYNTH_PTWY_ID")
     public UUID synthPathwayId;
 
