@@ -12,6 +12,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>gsrs-module-ssg4-spring-boot-autoconfigure</artifactId>
+    <name>gsrs-module-ssg4-spring-boot-autoconfigure</name>
 
     <dependencies>
         <!-- NCATS Common Dependencies -->
@@ -82,7 +83,7 @@
         <groupId>net.minidev</groupId>
         <artifactId>json-smart</artifactId>
         <version>2.5.1</version> <!-- Use the latest compatible version -->
-    </dependency>
+        </dependency>
     </dependencies>
 
 </project>
