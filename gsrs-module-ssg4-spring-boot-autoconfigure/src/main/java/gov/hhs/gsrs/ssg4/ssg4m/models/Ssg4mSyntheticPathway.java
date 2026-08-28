@@ -2,37 +2,14 @@ package gov.hhs.gsrs.ssg4.ssg4m.models;
 
 import java.util.UUID;
 
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
-import org.hibernate.annotations.Type;
-
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
-
 import lombok.Data;
-import lombok.ToString;
-
-import javax.persistence.*;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
+import jakarta.persistence.*;
 import java.util.Date;
-import java.util.List;
-import java.sql.Clob;
-import java.sql.Blob;
-import java.nio.charset.StandardCharsets;
 
 @Data
 @Entity
@@ -46,7 +23,9 @@ public class Ssg4mSyntheticPathway {
     public Long synthPathwaySkey;
 
     //maintain backwards compatibility with old GSRS store it as varchar(40) by default hibernate will store uuids as binary
-    @Type(type = "uuid-char")
+    // SB 3x __aw__ @Type annotation did not work
+    // Archana should check if this is OK
+    // @Type(type = "uuid-char")
     @Column(name = "SYNTH_PTWY_ID")
     public UUID synthPathwayId;
 
